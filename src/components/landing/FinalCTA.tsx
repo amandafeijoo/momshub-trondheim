@@ -15,9 +15,7 @@ export default function FinalCTA() {
         <Content>
           <SmallTitle>Join the first circle</SmallTitle>
 
-          <Title>
-            Start building your motherhood village in Trondheim.
-          </Title>
+          <Title>Start building your motherhood village in Trondheim.</Title>
 
           <Description>
             Connect with international moms, discover local meetups, and be part
@@ -56,16 +54,22 @@ const Container = styled(motion.div)`
   border-radius: 46px;
   text-align: center;
 
-  background:
-    radial-gradient(circle at 20% 10%, rgba(242, 140, 140, 0.28), transparent 34%),
-    radial-gradient(circle at 85% 90%, rgba(168, 191, 163, 0.24), transparent 38%),
+  background: radial-gradient(
+      circle at 20% 10%,
+      rgba(242, 140, 140, 0.28),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 85% 90%,
+      rgba(168, 191, 163, 0.24),
+      transparent 38%
+    ),
     rgba(255, 255, 255, 0.58);
 
   border: 1px solid rgba(242, 140, 140, 0.16);
   backdrop-filter: blur(20px);
 
-  box-shadow:
-    0 35px 110px rgba(74, 54, 44, 0.12),
+  box-shadow: 0 35px 110px rgba(74, 54, 44, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
 `;
 
@@ -158,8 +162,7 @@ const PrimaryButton = styled(BaseButton)`
   color: #fffaf8;
   background: linear-gradient(135deg, #ff9a9f, #e76672);
 
-  box-shadow:
-    0 20px 55px rgba(242, 140, 140, 0.42),
+  box-shadow: 0 20px 55px rgba(242, 140, 140, 0.42),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
   ${ButtonIcon} {

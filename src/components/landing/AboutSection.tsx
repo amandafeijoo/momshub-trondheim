@@ -19,9 +19,7 @@ export default function AboutSection() {
         <Left>
           <SmallTitle>About MomsHub</SmallTitle>
 
-          <Title>
-            Built for the mothers building a life far from home.
-          </Title>
+          <Title>Built for the mothers building a life far from home.</Title>
 
           <MiniText>
             A soft landing space for international moms in Trondheim — made for
@@ -120,8 +118,7 @@ const GlassCard = styled.div`
   border: 1px solid rgba(242, 140, 140, 0.16);
   backdrop-filter: blur(18px);
 
-  box-shadow:
-    0 30px 90px rgba(74, 54, 44, 0.1),
+  box-shadow: 0 30px 90px rgba(74, 54, 44, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.75);
 `;
 

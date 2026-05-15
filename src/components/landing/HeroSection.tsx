@@ -43,8 +43,7 @@ const Hero = styled.section`
   overflow: hidden;
   z-index: 2;
 
-  background:
-    radial-gradient(
+  background: radial-gradient(
       circle at top left,
       rgba(255, 170, 170, 0.24),
       transparent 34%
@@ -102,8 +101,7 @@ const Title = styled.h1`
   letter-spacing: -0.055em;
   color: #6a5e54;
 
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.35),
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35),
     0 14px 45px rgba(255, 248, 241, 0.55);
 
   span {
@@ -153,9 +151,7 @@ const BaseButton = styled.button`
   overflow: hidden;
   isolation: isolate;
 
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
+  transition: transform 0.35s ease, box-shadow 0.35s ease,
     border-color 0.35s ease;
 
   span {
@@ -203,16 +199,14 @@ const ButtonIcon = styled.span`
 
 const PrimaryButton = styled(BaseButton)`
   color: #fffaf8;
-  background:
-    radial-gradient(
+  background: radial-gradient(
       circle at 25% 10%,
       rgba(255, 255, 255, 0.38),
       transparent 26%
     ),
     linear-gradient(135deg, #ff9a9f 0%, #f2777f 48%, #e76672 100%);
 
-  box-shadow:
-    0 18px 45px rgba(242, 140, 140, 0.38),
+  box-shadow: 0 18px 45px rgba(242, 140, 140, 0.38),
     0 6px 16px rgba(226, 105, 115, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.38);
 
@@ -222,8 +216,7 @@ const PrimaryButton = styled(BaseButton)`
   }
 
   &:hover {
-    box-shadow:
-      0 24px 58px rgba(242, 140, 140, 0.48),
+    box-shadow: 0 24px 58px rgba(242, 140, 140, 0.48),
       0 10px 22px rgba(226, 105, 115, 0.22),
       inset 0 1px 0 rgba(255, 255, 255, 0.48);
   }
@@ -239,8 +232,7 @@ const SecondaryButton = styled(BaseButton)`
   border: 1px solid rgba(242, 140, 140, 0.22);
   backdrop-filter: blur(18px);
 
-  box-shadow:
-    0 18px 42px rgba(83, 65, 54, 0.08),
+  box-shadow: 0 18px 42px rgba(83, 65, 54, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.78);
 
   ${ButtonIcon} {
@@ -251,8 +243,7 @@ const SecondaryButton = styled(BaseButton)`
   &:hover {
     background: rgba(255, 255, 255, 0.88);
     border-color: rgba(242, 140, 140, 0.38);
-    box-shadow:
-      0 22px 50px rgba(83, 65, 54, 0.12),
+    box-shadow: 0 22px 50px rgba(83, 65, 54, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 

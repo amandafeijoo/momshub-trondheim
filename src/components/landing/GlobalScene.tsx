@@ -61,20 +61,18 @@ function PetalUnion() {
       groupRef.current.rotation.y =
         time * 0.08 + scrollProgress * Math.PI * 3.2;
 
-      groupRef.current.rotation.x =
-        Math.sin(time * 0.22) * 0.12;
+      groupRef.current.rotation.x = Math.sin(time * 0.22) * 0.12;
 
       groupRef.current.rotation.z =
         time * 0.05 + scrollProgress * Math.PI * 0.6;
 
-        groupRef.current.position.y =
+      groupRef.current.position.y =
         -scrollProgress * 0.85 + Math.sin(time * 0.42) * 0.08;
-        
+
       groupRef.current.position.x =
         Math.sin(scrollProgress * Math.PI * 2) * 0.25;
 
-      const scale =
-        1.18 + Math.sin(scrollProgress * Math.PI * 2) * 0.08;
+      const scale = 1.18 + Math.sin(scrollProgress * Math.PI * 2) * 0.08;
 
       groupRef.current.scale.setScalar(scale);
     }
@@ -86,15 +84,12 @@ function PetalUnion() {
       const radius = 0.52 + openAmount;
 
       mesh.position.x =
-        Math.cos(petal.angle) * radius +
-        Math.sin(time * 0.55 + index) * 0.025;
+        Math.cos(petal.angle) * radius + Math.sin(time * 0.55 + index) * 0.025;
 
       mesh.position.y =
-        Math.sin(petal.angle) * radius +
-        Math.cos(time * 0.5 + index) * 0.025;
+        Math.sin(petal.angle) * radius + Math.cos(time * 0.5 + index) * 0.025;
 
-      mesh.position.z =
-        Math.sin(time * 0.35 + index) * 0.06;
+      mesh.position.z = Math.sin(time * 0.35 + index) * 0.06;
 
       mesh.rotation.z = petal.angle - Math.PI / 2;
       mesh.rotation.x = Math.sin(time * 0.28 + index) * 0.18;
@@ -161,17 +156,9 @@ export default function GlobalScene() {
           color="#ffe1d2"
         />
 
-        <pointLight
-          position={[-4, -2, 3]}
-          intensity={1.15}
-          color="#f2a59a"
-        />
+        <pointLight position={[-4, -2, 3]} intensity={1.15} color="#f2a59a" />
 
-        <pointLight
-          position={[3, -3, 2]}
-          intensity={0.72}
-          color="#9fb493"
-        />
+        <pointLight position={[3, -3, 2]} intensity={0.72} color="#9fb493" />
 
         <PetalUnion />
 
