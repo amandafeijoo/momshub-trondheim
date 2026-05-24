@@ -166,14 +166,47 @@ export default function NearbyCirclesSection() {
                     <CircleCard
                       key={circle.title}
                       animate={{
-                        opacity: isActive ? 1 : isNext ? 0.14 : 0,
-                        y: isActive ? 0 : isNext ? 34 * distance : 90,
-                        scale: isActive ? 1 : 0.94,
-                        rotate: isActive ? 0 : index % 2 === 0 ? -2 : 2,
+                        opacity: isActive
+                          ? 1 - circleProgress * 0.65
+                          : isNext
+                          ? 0.12
+                          : 0,
+
+                        y: isActive
+                          ? -circleProgress * 70
+                          : isNext
+                          ? 70 * distance
+                          : 90,
+
+                        x: isActive
+                          ? circleProgress * 26
+                          : isNext
+                          ? 14 * distance
+                          : -40,
+
+                        scale: isActive
+                          ? 1 - circleProgress * 0.08
+                          : isNext
+                          ? 0.92
+                          : 0.85,
+
+                        rotateZ: isActive
+                          ? circleProgress * -5
+                          : isNext
+                          ? distance * 2
+                          : -4,
+
+                        rotateX: isActive ? circleProgress * 8 : isNext ? 5 : 0,
+
+                        filter: isActive
+                          ? `blur(${circleProgress * 1.8}px)`
+                          : isNext
+                          ? "blur(1px)"
+                          : "blur(2px)",
                       }}
                       transition={{
-                        duration: 0.55,
-                        ease: [0.22, 1, 0.36, 1],
+                        duration: 0.22,
+                        ease: "linear",
                       }}
                       style={{ zIndex: circles.length - index }}
                     >
@@ -420,6 +453,9 @@ const CircleCard = styled(motion.article)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
 `;
 
 const CardTop = styled.div`

@@ -23,7 +23,7 @@ export default function Navbar() {
           <NavLink href="/">Home</NavLink>
           <NavLink href="/community">Community</NavLink>
           <NavLink href="/">Events</NavLink>
-          <NavLink href="/">Marketplace</NavLink>
+          <NavLink href="/marketplace">Marketplace</NavLink>
           <NavLink href="/">About</NavLink>
         </Links>
 

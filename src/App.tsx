@@ -9,6 +9,7 @@ import GlobalScene from "./components/landing/GlobalScene";
 
 import LandingPage from "./pages/LandingPage";
 import CommunityPage from "./pages/CommunityPage";
+import MarketplacePage from "./pages/MarketplacePage";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
+
       </Routes>
     </BrowserRouter>
   );
