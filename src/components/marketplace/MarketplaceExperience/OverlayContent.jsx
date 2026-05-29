@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function OverlayContent({ items, activeIndex }) {
   const activeItem = items[activeIndex];
@@ -12,6 +13,7 @@ export default function OverlayContent({ items, activeIndex }) {
         {items.map((item, index) => (
           <NumberItem key={item.number} $active={index === activeIndex}>
             <NumberGlow $active={index === activeIndex} />
+
             <span>{item.number}</span>
           </NumberItem>
         ))}
@@ -30,9 +32,12 @@ export default function OverlayContent({ items, activeIndex }) {
             }}
           >
             <Tag>{activeItem.tag}</Tag>
+
             <Title>{activeItem.title}</Title>
+
             <Description>{activeItem.text}</Description>
-            <CTAButton>Explore category</CTAButton>
+
+            <CTAButton to={activeItem.path}>Explore category</CTAButton>
           </ContentMotion>
         </AnimatePresence>
       </CenterContent>
@@ -57,15 +62,19 @@ const SmallLabel = styled.p`
   z-index: 12;
 
   margin: 0;
+
   text-transform: uppercase;
   letter-spacing: 0.42em;
+
   font-size: 0.76rem;
   font-weight: 900;
+
   color: rgba(76, 62, 55, 0.58);
 
   @media (max-width: 768px) {
     top: 2rem;
     left: 1.5rem;
+
     font-size: 0.64rem;
     letter-spacing: 0.28em;
   }
@@ -78,6 +87,7 @@ const NumbersRail = styled.div`
   z-index: 10;
 
   width: min(1380px, calc(100% - 4rem));
+
   transform: translateX(-50%);
 
   display: flex;
@@ -86,11 +96,14 @@ const NumbersRail = styled.div`
 
   &::before {
     content: "";
+
     position: absolute;
     left: 0;
     right: 0;
     top: 50%;
+
     height: 1px;
+
     background: rgba(72, 60, 54, 0.13);
   }
 
@@ -106,12 +119,14 @@ const NumberItem = styled.div`
 
   width: clamp(72px, 8vw, 122px);
   height: clamp(72px, 8vw, 122px);
+
   border-radius: 50%;
 
   display: grid;
   place-items: center;
 
   background: transparent;
+
   border: 1px solid rgba(72, 60, 54, 0.17);
 
   transform: ${({ $active }) => ($active ? "scale(1.12)" : "scale(1)")};
@@ -125,7 +140,9 @@ const NumberItem = styled.div`
 
     font-family: "Playfair Display", Georgia, serif;
     font-size: clamp(2rem, 4vw, 4.3rem);
+
     line-height: 1;
+
     color: ${({ $active }) =>
       $active ? "rgba(44, 35, 31, 0.95)" : "rgba(44, 35, 31, 0.54)"};
 
@@ -137,22 +154,30 @@ const NumberItem = styled.div`
 
   &::after {
     content: "";
+
     position: absolute;
     inset: 12px;
+
     border-radius: 50%;
+
     border: 1px solid rgba(72, 60, 54, 0.11);
   }
 
   &::before {
     content: "";
+
     position: absolute;
     inset: -14px;
+
     border-radius: 50%;
+
     border: ${({ $active }) =>
       $active
         ? "1px solid rgba(242, 140, 140, 0.28)"
         : "1px solid transparent"};
+
     opacity: ${({ $active }) => ($active ? 1 : 0)};
+
     transition: opacity 0.7s ease;
   }
 `;
@@ -160,6 +185,7 @@ const NumberItem = styled.div`
 const NumberGlow = styled.div`
   position: absolute;
   inset: -34px;
+
   border-radius: 50%;
 
   background: radial-gradient(
@@ -170,6 +196,7 @@ const NumberGlow = styled.div`
   );
 
   opacity: ${({ $active }) => ($active ? 1 : 0)};
+
   transform: ${({ $active }) => ($active ? "scale(1)" : "scale(0.78)")};
 
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -180,6 +207,7 @@ const CenterContent = styled.div`
   inset: 0;
 
   width: min(1380px, calc(100% - 4rem));
+
   margin: 0 auto;
 
   display: flex;
@@ -202,6 +230,7 @@ const Tag = styled.div`
 
   text-transform: uppercase;
   letter-spacing: 0.28em;
+
   font-size: 0.72rem;
   font-weight: 900;
 
@@ -212,6 +241,7 @@ const Title = styled.h2`
   margin: 0;
 
   font-family: "Playfair Display", Georgia, serif;
+
   font-size: clamp(5rem, 15vw, 5.5rem);
   line-height: 0.76;
   letter-spacing: -0.095em;
@@ -226,10 +256,12 @@ const Title = styled.h2`
 
 const Description = styled.p`
   max-width: 520px;
+
   margin-top: 1.8rem;
 
   font-size: 1.05rem;
   line-height: 1.85;
+
   color: rgba(72, 58, 50, 0.74);
 
   @media (max-width: 768px) {
@@ -238,11 +270,17 @@ const Description = styled.p`
   }
 `;
 
-const CTAButton = styled.button`
+const CTAButton = styled(Link)`
   margin-top: 2rem;
 
   height: 54px;
+  width: fit-content;
+
   padding: 0 1.45rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   border-radius: 999px;
   border: 1px solid rgba(242, 140, 140, 0.28);
@@ -250,10 +288,13 @@ const CTAButton = styled.button`
   background: rgba(255, 246, 241, 0.58);
   color: #e98189;
 
+  text-decoration: none;
+
   font-weight: 900;
   letter-spacing: 0.03em;
 
   cursor: pointer;
+
   backdrop-filter: blur(16px);
 
   box-shadow: 0 22px 50px rgba(242, 140, 140, 0.2);
@@ -262,7 +303,9 @@ const CTAButton = styled.button`
 
   &:hover {
     transform: translateY(-4px);
+
     background: rgba(255, 246, 241, 0.8);
+
     box-shadow: 0 30px 65px rgba(242, 140, 140, 0.28);
   }
 `;

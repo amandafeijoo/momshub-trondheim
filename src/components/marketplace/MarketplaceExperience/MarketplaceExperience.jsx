@@ -1,7 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { useScroll, useMotionValueEvent } from "framer-motion";
-import { useState } from "react";
 
 import CanvasScene from "./CanvasScene";
 import OverlayContent from "./OverlayContent";
@@ -19,6 +18,7 @@ const marketplaceData = [
     number: "01",
     title: "Donate",
     tag: "FREE",
+    path: "/donate",
     icon: <FiGift />,
     text: "Pass baby items forward for free and help another mom nearby.",
   },
@@ -26,6 +26,7 @@ const marketplaceData = [
     number: "02",
     title: "Baby essentials",
     tag: "SECONDHAND",
+    path: "/marketplace/baby-essentials",
     icon: <FiHome />,
     text: "Curated preloved baby clothes, strollers and everyday essentials.",
   },
@@ -33,6 +34,7 @@ const marketplaceData = [
     number: "03",
     title: "Handmade",
     tag: "LOCAL MOMS",
+    path: "/marketplace/handmade",
     icon: <FiHeart />,
     text: "Discover knitted, sewn and handmade pieces created by mothers.",
   },
@@ -40,6 +42,7 @@ const marketplaceData = [
     number: "04",
     title: "Toys & books",
     tag: "LITTLE FINDS",
+    path: "/marketplace/toys-books",
     icon: <FiBookOpen />,
     text: "Stories, toys and small treasures ready for another home.",
   },
@@ -47,14 +50,14 @@ const marketplaceData = [
     number: "05",
     title: "Pregnancy essentials",
     tag: "MOTHERHOOD",
+    path: "/marketplace/pregnancy-essentials",
     icon: <FiShoppingBag />,
     text: "Maternity clothes, pillows and support items for pregnancy.",
   },
 ];
 
 export default function MarketplaceExperience() {
-  const sectionRef = useRef(null);
-
+  const sectionRef = (useRef < HTMLElement) | (null > null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -64,7 +67,6 @@ export default function MarketplaceExperience() {
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const total = marketplaceData.length;
-
     const index = Math.min(total - 1, Math.floor(latest * total));
 
     setActiveIndex(index);
@@ -73,12 +75,10 @@ export default function MarketplaceExperience() {
   return (
     <Section ref={sectionRef}>
       <StickyWrapper>
-        {/* THREE.JS BACKGROUND */}
         <CanvasLayer>
           <CanvasScene activeIndex={activeIndex} progress={scrollYProgress} />
         </CanvasLayer>
 
-        {/* HTML CONTENT */}
         <OverlayLayer>
           <OverlayContent items={marketplaceData} activeIndex={activeIndex} />
         </OverlayLayer>
@@ -86,10 +86,6 @@ export default function MarketplaceExperience() {
     </Section>
   );
 }
-
-/* =========================
-   STYLES
-========================= */
 
 const Section = styled.section`
   position: relative;

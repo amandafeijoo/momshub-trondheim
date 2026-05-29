@@ -17,17 +17,18 @@ type Props = {
 export default function NearbyCirclesIntro({ circles, progress }: Props) {
   const wordScale = Math.max(0.46, 1 - progress * 1.8);
   const wordMove = Math.min(progress * 280, 85);
+  const wordOpacity = Math.max(0, 1 - progress * 4.2);
 
   return (
     <Intro>
-      <Words style={{ transform: `scale(${wordScale})` }}>
-        <RailWord style={{ transform: `translateX(-${wordMove}%)` }}>
+      <Words style={{ transform: `scale(${wordScale})`, opacity: wordOpacity }}>
+        <RailWordDark style={{ transform: `translateX(-${wordMove}%)` }}>
           Nearby
-        </RailWord>
+        </RailWordDark>
 
-        <RailWord style={{ transform: `translateX(${wordMove}%)` }}>
+        <RailWordLight style={{ transform: `translateX(${wordMove}%)` }}>
           Circles
-        </RailWord>
+        </RailWordLight>
       </Words>
 
       <CardsRow>
@@ -97,14 +98,21 @@ const Words = styled.div`
   transition: transform 0.08s linear;
 `;
 
-const RailWord = styled.h3`
-  font-size: clamp(5rem, 13vw, 10rem);
+const RailWordBase = styled.h3`
+  font-size: clamp(5rem, 13vw, 8rem);
   line-height: 0.78;
   font-weight: 500;
-  letter-spacing: -0.085em;
+  letter-spacing: -0.045em;
 
-  color: rgba(47, 42, 37, 0.92);
   transition: transform 0.08s linear;
+`;
+
+const RailWordDark = styled(RailWordBase)`
+  color: #98785f;
+`;
+
+const RailWordLight = styled(RailWordBase)`
+  color: #c59a74;
 `;
 
 const CardsRow = styled.div`
@@ -187,7 +195,7 @@ const CardIllustration = styled.img`
   height: 82%;
   object-fit: contain;
 
-  opacity: 0.88;
+  opacity: 4.88;
   mix-blend-mode: multiply;
 `;
 
