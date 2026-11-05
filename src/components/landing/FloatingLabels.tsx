@@ -3,11 +3,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 const labels = [
   { text: "COMMUNITY", top: "18%", left: "10%" },
-  { text: "MOTHERHOOD", top: "36%", right: "8%" },
+  { text: "FRIENDSHIP", top: "36%", right: "8%" },
   { text: "MEETUPS", top: "62%", left: "12%" },
-  { text: "MARKETPLACE", top: "78%", right: "14%" },
+  { text: "BELONGING", top: "78%", right: "14%" },
   { text: "SUPPORT", top: "48%", left: "72%" },
-  { text: "BETTER TOGETHER", top: "84%", left: "42%" },
+  { text: "CONNECTION", top: "84%", left: "42%" },
 ];
 
 export default function FloatingLabels() {
@@ -52,7 +52,7 @@ const Tag = styled.div<{
   border-radius: 999px;
 
   background: rgba(255, 250, 246, 0.62);
-  border: 1px solid rgba(242, 140, 140, 0.22);
+  border: 3px solid rgba(242, 140, 140, 0.22);
   backdrop-filter: blur(12px);
 
   color: #8c6b5c;

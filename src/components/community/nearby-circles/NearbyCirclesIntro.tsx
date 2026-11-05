@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type Circle = {
   title: string;
@@ -15,9 +15,11 @@ type Props = {
 };
 
 export default function NearbyCirclesIntro({ circles, progress }: Props) {
-  const wordScale = Math.max(0.46, 1 - progress * 1.8);
-  const wordMove = Math.min(progress * 280, 85);
-  const wordOpacity = Math.max(0, 1 - progress * 4.2);
+  const wordScale = Math.max(0.5, 1 - progress * 1.6);
+  const wordMove = Math.min(progress * 220, 72);
+  const wordOpacity = Math.max(0, 1 - progress * 4);
+
+  const cardsProgress = Math.min(Math.max((progress - 0.2) / 0.22, 0), 1);
 
   return (
     <Intro>
@@ -31,43 +33,51 @@ export default function NearbyCirclesIntro({ circles, progress }: Props) {
         </RailWordLight>
       </Words>
 
-      <CardsRow>
-        {circles.slice(0, 4).map((circle, index) => {
-          const start = 0.12 + index * 0.055;
-          const localProgress = Math.min(
-            Math.max((progress - start) / 0.08, 0),
-            1
-          );
+      <CardsViewport>
+        <CardsRow
+          style={
+            {
+              "--cards-progress": cardsProgress,
+            } as CSSProperties
+          }
+        >
+          {circles.slice(0, 4).map((circle, index) => {
+            const start = 0.12 + index * 0.055;
+            const localProgress = Math.min(
+              Math.max((progress - start) / 0.08, 0),
+              1
+            );
 
-          return (
-            <RailCard
-              key={circle.title}
-              style={{
-                opacity: localProgress,
-                transform: `translateY(${55 - localProgress * 55}px) scale(${
-                  0.9 + localProgress * 0.1
-                })`,
-              }}
-            >
-              {circle.image && (
-                <IllustrationWrap>
-                  <CardIllustration src={circle.image} alt={circle.title} />
-                </IllustrationWrap>
-              )}
+            return (
+              <RailCard
+                key={circle.title}
+                style={{
+                  opacity: localProgress,
+                  transform: `translateY(${45 - localProgress * 45}px) scale(${
+                    0.94 + localProgress * 0.06
+                  })`,
+                }}
+              >
+                {circle.image && (
+                  <IllustrationWrap>
+                    <CardIllustration src={circle.image} alt={circle.title} />
+                  </IllustrationWrap>
+                )}
 
-              <CardTop>
-                <RailIcon>{circle.icon}</RailIcon>
-                <RailTag>{circle.tag}</RailTag>
-              </CardTop>
+                <CardTop>
+                  <RailIcon>{circle.icon}</RailIcon>
+                  <RailTag>{circle.tag}</RailTag>
+                </CardTop>
 
-              <RailContent>
-                <RailTitle>{circle.title}</RailTitle>
-                <RailText>{circle.subtitle}</RailText>
-              </RailContent>
-            </RailCard>
-          );
-        })}
-      </CardsRow>
+                <RailContent>
+                  <RailTitle>{circle.title}</RailTitle>
+                  <RailText>{circle.subtitle}</RailText>
+                </RailContent>
+              </RailCard>
+            );
+          })}
+        </CardsRow>
+      </CardsViewport>
 
       <FineLine />
     </Intro>
@@ -83,6 +93,12 @@ const Intro = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    min-height: 100svh;
+  }
 `;
 
 const Words = styled.div`
@@ -93,9 +109,15 @@ const Words = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: clamp(0.4rem, 2vw, 1rem);
 
   pointer-events: none;
   transition: transform 0.08s linear;
+
+  @media (max-width: 900px) {
+    align-items: flex-start;
+    padding-top: 7vh;
+  }
 `;
 
 const RailWordBase = styled.h3`
@@ -103,8 +125,11 @@ const RailWordBase = styled.h3`
   line-height: 0.78;
   font-weight: 500;
   letter-spacing: -0.045em;
-
   transition: transform 0.08s linear;
+
+  @media (max-width: 768px) {
+    font-size: clamp(3.2rem, 15vw, 5.4rem);
+  }
 `;
 
 const RailWordDark = styled(RailWordBase)`
@@ -115,16 +140,48 @@ const RailWordLight = styled(RailWordBase)`
   color: #c59a74;
 `;
 
-const CardsRow = styled.div`
+const CardsViewport = styled.div`
   position: relative;
   z-index: 5;
+  width: 100%;
+  overflow: visible;
 
+  @media (max-width: 900px) {
+    overflow-x: clip;
+    overflow-y: visible;
+    margin-top: 9rem;
+    padding-top: 4.5rem;
+  }
+`;
+
+const CardsRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
 
+  width: 100%;
   margin-top: 4rem;
+
+  @media (max-width: 900px) {
+    justify-content: flex-start;
+    width: max-content;
+    margin-top: 0;
+    gap: 1rem;
+
+    padding-left: calc((100vw - 280px) / 2);
+    padding-right: calc((100vw - 280px) / 2);
+
+    transform: translateX(calc(var(--cards-progress) * -870px));
+    transition: transform 0.08s linear;
+  }
+
+  @media (max-width: 420px) {
+    padding-left: calc((100vw - 260px) / 2);
+    padding-right: calc((100vw - 260px) / 2);
+
+    transform: translateX(calc(var(--cards-progress) * -930px));
+  }
 `;
 
 const RailCard = styled.div`
@@ -140,6 +197,7 @@ const RailCard = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
+  flex-shrink: 0;
   overflow: visible;
 
   background: radial-gradient(
@@ -161,6 +219,20 @@ const RailCard = styled.div`
     inset 0 1px 0 rgba(255, 255, 255, 0.88);
 
   transition: opacity 0.12s linear, transform 0.12s linear;
+
+  @media (max-width: 900px) {
+    width: 280px;
+    height: 195px;
+    padding: 1.35rem;
+    padding-top: 5.9rem;
+  }
+
+  @media (max-width: 420px) {
+    width: 260px;
+    height: 188px;
+    padding: 1.2rem;
+    padding-top: 5.4rem;
+  }
 `;
 
 const IllustrationWrap = styled.div`
@@ -172,7 +244,6 @@ const IllustrationWrap = styled.div`
   width: 145px;
   height: 145px;
   border-radius: 50%;
-  border: 2px solid rgba(244, 189, 189, 0.18);
 
   display: flex;
   align-items: center;
@@ -186,16 +257,22 @@ const IllustrationWrap = styled.div`
     transparent 100%
   );
 
+  border: 2px solid rgba(244, 189, 189, 0.18);
   filter: drop-shadow(0 18px 35px rgba(242, 140, 140, 0.22));
   pointer-events: none;
+
+  @media (max-width: 420px) {
+    width: 125px;
+    height: 125px;
+    top: -48px;
+  }
 `;
 
 const CardIllustration = styled.img`
   width: 82%;
   height: 82%;
   object-fit: contain;
-
-  opacity: 4.88;
+  opacity: 0.88;
   mix-blend-mode: multiply;
 `;
 
@@ -203,6 +280,7 @@ const CardTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
 `;
 
 const RailIcon = styled.div`
@@ -218,6 +296,8 @@ const RailIcon = styled.div`
 
   background: rgba(242, 140, 140, 0.13);
   border: 2px solid rgba(244, 189, 189, 0.18);
+
+  flex-shrink: 0;
 `;
 
 const RailTag = styled.span`
@@ -231,21 +311,23 @@ const RailTag = styled.span`
   font-size: 0.62rem;
   font-weight: 900;
   letter-spacing: 0.12em;
+
+  white-space: nowrap;
 `;
 
 const RailContent = styled.div``;
 
 const RailTitle = styled.h4`
-  font-size: clamp(1.65rem, 2.3vw, 2.25rem);
+  font-size: clamp(1.55rem, 2.3vw, 2.25rem);
   line-height: 0.9;
   letter-spacing: -0.065em;
   color: #4a3b33;
 `;
 
 const RailText = styled.p`
-  margin-top: 0.9rem;
-  font-size: 0.9rem;
-  line-height: 1.55;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
   color: #5f554c;
 `;
 
@@ -259,4 +341,8 @@ const FineLine = styled.span`
 
   transform: translateX(-50%);
   background: rgba(74, 59, 51, 0.14);
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;

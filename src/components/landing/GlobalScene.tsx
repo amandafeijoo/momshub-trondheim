@@ -1,8 +1,17 @@
+
 import styled from "styled-components";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float, MeshDistortMaterial } from "@react-three/drei";
+import {
+  Environment,
+  Float,
+  MeshDistortMaterial,
+} from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
+
+/* =========================
+   PETALS
+========================= */
 
 const petals = [
   {
@@ -37,68 +46,173 @@ const petals = [
   },
 ];
 
-function clamp(value: number, min: number, max: number) {
+/* =========================
+   HELPERS
+========================= */
+
+function clamp(
+  value: number,
+  min: number,
+  max: number
+) {
   return Math.min(Math.max(value, min), max);
 }
 
+/* =========================
+   3D FLOWER
+========================= */
+
 function PetalUnion() {
   const groupRef = useRef<THREE.Group>(null);
-  const meshRefs = useRef<Array<THREE.Mesh | null>>([]);
+
+  const meshRefs = useRef<
+    Array<THREE.Mesh | null>
+  >([]);
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
 
+    /* =========================
+       GLOBAL SCROLL
+    ========================= */
+
     const maxScroll =
-      document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.scrollHeight -
+      window.innerHeight;
 
     const scrollProgress =
-      maxScroll > 0 ? clamp(window.scrollY / maxScroll, 0, 1) : 0;
+      maxScroll > 0
+        ? clamp(window.scrollY / maxScroll, 0, 1)
+        : 0;
+
+    /* =========================
+       HERO TRANSITION
+
+       Starts on the right.
+       Moves gradually to center
+       during the first viewport.
+    ========================= */
+
+    const heroScrollProgress = clamp(
+      window.scrollY / Math.max(window.innerHeight, 1),
+      0,
+      1
+    );
+
+    const heroTransition = THREE.MathUtils.smoothstep(
+      heroScrollProgress,
+      0,
+      1
+    );
+
+    const heroOffset =
+      window.innerWidth > 900
+        ? (1 - heroTransition) * 1.15
+        : 0;
+
+    /* =========================
+       PETAL OPENING
+    ========================= */
 
     const openAmount =
-      Math.max(0, Math.sin(scrollProgress * Math.PI * 4)) * 0.42;
+      Math.max(
+        0,
+        Math.sin(scrollProgress * Math.PI * 4)
+      ) * 0.42;
+
+    /* =========================
+       GLOBAL FLOWER ANIMATION
+    ========================= */
 
     if (groupRef.current) {
-      groupRef.current.rotation.y =
-        time * 0.08 + scrollProgress * Math.PI * 3.2;
+      const group = groupRef.current;
 
-      groupRef.current.rotation.x = Math.sin(time * 0.22) * 0.12;
+      // Keep the original rotation
+      group.rotation.y =
+        time * 0.08 +
+        scrollProgress * Math.PI * 3.2;
 
-      groupRef.current.rotation.z =
-        time * 0.05 + scrollProgress * Math.PI * 0.6;
+      group.rotation.x =
+        Math.sin(time * 0.22) * 0.12;
 
-      groupRef.current.position.y =
-        -scrollProgress * 0.85 + Math.sin(time * 0.42) * 0.08;
+      group.rotation.z =
+        time * 0.05 +
+        scrollProgress * Math.PI * 0.6;
 
-      groupRef.current.position.x =
-        Math.sin(scrollProgress * Math.PI * 2) * 0.25;
+      // Original vertical movement
+      group.position.y =
+        -scrollProgress * 0.85 +
+        Math.sin(time * 0.42) * 0.08;
 
-      const scale = 1.18 + Math.sin(scrollProgress * Math.PI * 2) * 0.08;
+      /* =========================
+         NEW HORIZONTAL MOVEMENT
+      ========================= */
 
-      groupRef.current.scale.setScalar(scale);
+      const originalMovement =
+        Math.sin(scrollProgress * Math.PI * 2) *
+        0.25;
+
+      const targetX =
+        heroOffset + originalMovement;
+
+      // Smooth transition between positions
+      group.position.x = THREE.MathUtils.lerp(
+        group.position.x,
+        targetX,
+        0.05
+      );
+
+      /* =========================
+         ORIGINAL SCALE
+      ========================= */
+
+      const scale =
+        1.18 +
+        Math.sin(scrollProgress * Math.PI * 2) *
+          0.08;
+
+      group.scale.setScalar(scale);
     }
+
+    /* =========================
+       INDIVIDUAL PETAL MOVEMENT
+    ========================= */
 
     petals.forEach((petal, index) => {
       const mesh = meshRefs.current[index];
+
       if (!mesh) return;
 
       const radius = 0.52 + openAmount;
 
       mesh.position.x =
-        Math.cos(petal.angle) * radius + Math.sin(time * 0.55 + index) * 0.025;
+        Math.cos(petal.angle) * radius +
+        Math.sin(time * 0.55 + index) * 0.025;
 
       mesh.position.y =
-        Math.sin(petal.angle) * radius + Math.cos(time * 0.5 + index) * 0.025;
+        Math.sin(petal.angle) * radius +
+        Math.cos(time * 0.5 + index) * 0.025;
 
-      mesh.position.z = Math.sin(time * 0.35 + index) * 0.06;
+      mesh.position.z =
+        Math.sin(time * 0.35 + index) * 0.06;
 
-      mesh.rotation.z = petal.angle - Math.PI / 2;
-      mesh.rotation.x = Math.sin(time * 0.28 + index) * 0.18;
-      mesh.rotation.y = time * 0.08 + index * 0.18;
+      mesh.rotation.z =
+        petal.angle - Math.PI / 2;
+
+      mesh.rotation.x =
+        Math.sin(time * 0.28 + index) * 0.18;
+
+      mesh.rotation.y =
+        time * 0.08 + index * 0.18;
     });
   });
 
   return (
-    <Float speed={1.05} rotationIntensity={0.16} floatIntensity={0.25}>
+    <Float
+      speed={1.05}
+      rotationIntensity={0.16}
+      floatIntensity={0.25}
+    >
       <group ref={groupRef}>
         {petals.map((petal, index) => (
           <mesh
@@ -106,7 +220,13 @@ function PetalUnion() {
             ref={(element) => {
               meshRefs.current[index] = element;
             }}
-            scale={petal.scale as [number, number, number]}
+            scale={
+              petal.scale as [
+                number,
+                number,
+                number
+              ]
+            }
           >
             <sphereGeometry args={[1, 96, 96]} />
 
@@ -121,6 +241,8 @@ function PetalUnion() {
             />
           </mesh>
         ))}
+
+        {/* FLOWER CENTER */}
 
         <mesh scale={[0.42, 0.42, 0.42]}>
           <sphereGeometry args={[1, 96, 96]} />
@@ -140,15 +262,29 @@ function PetalUnion() {
   );
 }
 
+/* =========================
+   GLOBAL SCENE
+========================= */
+
 export default function GlobalScene() {
   return (
     <SceneWrapper>
       <Canvas
-        camera={{ position: [0, 0, 5.8], fov: 42 }}
+        camera={{
+          position: [0, 0, 5.8],
+          fov: 42,
+        }}
         dpr={[1, 1.7]}
-        gl={{ alpha: true, antialias: true }}
+        gl={{
+          alpha: true,
+          antialias: true,
+        }}
       >
+        {/* AMBIENT LIGHT */}
+
         <ambientLight intensity={0.82} />
+
+        {/* WARM MAIN LIGHT */}
 
         <directionalLight
           position={[4, 4, 5]}
@@ -156,11 +292,27 @@ export default function GlobalScene() {
           color="#ffe1d2"
         />
 
-        <pointLight position={[-4, -2, 3]} intensity={1.15} color="#f2a59a" />
+        {/* PINK LIGHT */}
 
-        <pointLight position={[3, -3, 2]} intensity={0.72} color="#9fb493" />
+        <pointLight
+          position={[-4, -2, 3]}
+          intensity={1.15}
+          color="#f2a59a"
+        />
+
+        {/* SAGE LIGHT */}
+
+        <pointLight
+          position={[3, -3, 2]}
+          intensity={0.72}
+          color="#9fb493"
+        />
+
+        {/* ANIMATED FLOWER */}
 
         <PetalUnion />
+
+        {/* ENVIRONMENT */}
 
         <Environment preset="sunset" />
       </Canvas>
@@ -168,10 +320,16 @@ export default function GlobalScene() {
   );
 }
 
+/* =========================
+   FIXED GLOBAL CANVAS
+========================= */
+
 const SceneWrapper = styled.div`
   position: fixed;
   inset: 0;
+
   z-index: 1;
   pointer-events: none;
+
   opacity: 1;
 `;

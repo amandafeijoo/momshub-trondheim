@@ -1,197 +1,364 @@
+
 import styled from "styled-components";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { FiUsers, FiCalendar, FiShoppingBag, FiHeart } from "react-icons/fi";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  FiCoffee,
+  FiMapPin,
+  FiFeather,
+  FiRefreshCw,
+  FiArrowUpRight,
+} from "react-icons/fi";
+
+/* ========================
+   FEATURES DATA
+======================== */
 
 const features = [
   {
     number: "01",
-    icon: <FiUsers />,
-    title: "Community",
-    text: "A space to connect with other international moms and feel part of something close.",
-    preview:
-      "Find nearby moms, join small circles, discover support groups and start building real connections in Trondheim.",
-    items: ["Meetups", "Support groups", "Moms nearby"],
-    previewItems: [
-      "Find nearby moms",
-      "Join small circles",
-      "Start conversations",
-    ],
-    path: "/community",
-    cta: "Explore Community",
+    icon: <FiCoffee />,
+    title: "Coffee & Connection",
+    text:
+      "Relaxed coffee meetups where moms can connect, share experiences and make new friends. Babies are always welcome!",
+    tags: ["Coffee meetups", "Baby-friendly"],
+    color: "#B77D70",
+    background: "#FAF0EB",
+    border: "#EEDCD4",
   },
   {
     number: "02",
-    icon: <FiShoppingBag />,
-    title: "Marketplace",
-    text: "Exchange baby and motherhood items locally in a simple, trusted and community-first way.",
-    preview:
-      "Browse baby clothes, strollers, toys and second-hand essentials from local families.",
-    items: ["Baby clothes", "Strollers", "Second-hand items"],
-    previewItems: ["Browse essentials", "Sell locally", "Exchange safely"],
-    path: "/marketplace",
-    cta: "Explore Marketplace",
+    icon: <FiMapPin />,
+    title: "MomsHub Out",
+    text:
+      "Exploring Trondheim together through stroller walks, baby singing sessions, library visits and creative outings like baby-print ceramics.",
+    tags: ["Stroller walks", "Baby activities"],
+    color: "#87987E",
+    background: "#F0F2EA",
+    border: "#DCE4D6",
   },
   {
     number: "03",
-    icon: <FiCalendar />,
-    title: "Events",
-    text: "Discover simple ways to get out, meet other families and enjoy Trondheim together.",
-    preview:
-      "Find coffee meetups, stroller walks, playdates and baby-friendly activities around the city.",
-    items: ["Coffee meetups", "Walks", "Baby activities"],
-    previewItems: ["Coffee mornings", "Stroller walks", "Playdates"],
-    path: "/events",
-    cta: "Explore Events",
+    icon: <FiFeather />,
+    title: "Workshops & Culture",
+    text:
+      "Creative workshops, wellbeing activities and cultural experiences. From sharing talents to celebrating our traditions through future Country Days.",
+    tags: ["Creative workshops", "Country Days"],
+    color: "#A486A6",
+    background: "#F6F0F6",
+    border: "#E8DDE9",
   },
   {
     number: "04",
-    icon: <FiHeart />,
-    title: "Support",
-    text: "Find answers, recommendations and emotional support while navigating motherhood abroad.",
-    preview:
-      "Ask questions, find trusted recommendations and feel supported through motherhood abroad.",
-    items: ["Questions", "Recommendations", "Motherhood abroad"],
-    previewItems: ["Ask questions", "Get recommendations", "Feel supported"],
-    path: "/support",
-    cta: "Explore Support",
+    icon: <FiRefreshCw />,
+    title: "MomsHub Swaps",
+    text:
+      "We're planning community swap events where moms can exchange pre-loved baby clothes, toys and essentials, giving them a new home.",
+    tags: ["Clothing swaps", "Toy swaps"],
+    color: "#BC8A6B",
+    background: "#FBF2EA",
+    border: "#EDDED1",
   },
 ];
 
+/* ========================
+   MAIN COMPONENT
+======================== */
+
 export default function FeaturesSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <Section>
+    <Section id="activities">
+      {/* SECTION HEADER */}
+
       <Header
-        initial={{ opacity: 0, y: 36 }}
+        initial={
+          reduceMotion
+            ? false
+            : { opacity: 0, y: 36 }
+        }
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.7,
+          ease: "easeOut",
+        }}
+        viewport={{
+          once: true,
+          amount: 0.2,
+        }}
       >
-        <SmallTitle>What you can do</SmallTitle>
-        <Title>Everything mothers need, gathered in one local hub.</Title>
+        <SmallTitle>
+          02 / WHAT WE DO
+        </SmallTitle>
+
+        <Title>
+          Little moments
+          <Accent>
+            Meaningful connections
+          </Accent>
+        </Title>
+
+        <Intro>
+          From coffee dates to creative afternoons,
+          little adventures and community swaps.
+          Discover different ways to connect,
+          share and grow together in Trondheim.
+        </Intro>
       </Header>
+
+      {/* FEATURES GRID */}
 
       <Grid>
         {features.map((feature, index) => (
           <Card
-            key={feature.title}
-            initial={{ opacity: 0, y: 42 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: index * 0.12 }}
-            viewport={{ once: true, amount: 0.35 }}
+            key={feature.number}
+            $background={feature.background}
+            $border={feature.border}
+            $accent={feature.color}
+            initial={
+              reduceMotion
+                ? false
+                : { opacity: 0, y: 40 }
+            }
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            whileHover={
+              reduceMotion
+                ? undefined
+                : { y: -7 }
+            }
+            transition={{
+              duration: reduceMotion ? 0 : 0.6,
+              delay: reduceMotion
+                ? 0
+                : index * 0.1,
+              ease: "easeOut",
+            }}
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
           >
+            {/* CARD TOP */}
+
             <Top>
-              <Number>{feature.number}</Number>
-              <Icon>{feature.icon}</Icon>
+              <Number>
+                {feature.number}
+              </Number>
+
+              <IconCircle aria-hidden="true">
+                {feature.icon}
+              </IconCircle>
             </Top>
 
+            {/* CARD CONTENT */}
+
             <CardContent>
-              <CardTitle>{feature.title}</CardTitle>
-              <CardText>{feature.text}</CardText>
+              <CardTitle>
+                {feature.title}
+              </CardTitle>
 
-              <Preview>{feature.preview}</Preview>
-
-              <Tags>
-                {feature.items.map((item) => (
-                  <Tag key={item}>{item}</Tag>
-                ))}
-              </Tags>
-
-              <MiniPreview>
-                {feature.previewItems.map((item) => (
-                  <MiniPreviewItem key={item}>{item}</MiniPreviewItem>
-                ))}
-              </MiniPreview>
-
-              <CardLink to={feature.path}>
-                {feature.cta}
-                <span>→</span>
-              </CardLink>
+              <CardText>
+                {feature.text}
+              </CardText>
             </CardContent>
+
+            {/* TAGS */}
+
+            <Tags>
+              {feature.tags.map((tag) => (
+                <Tag key={tag}>
+                  {tag}
+                </Tag>
+              ))}
+            </Tags>
           </Card>
         ))}
       </Grid>
+
+      {/* BOTTOM LINK */}
+
+      <Bottom>
+        <ExploreLink href="#events">
+          <span>
+            Explore upcoming events
+          </span>
+
+          <FiArrowUpRight />
+        </ExploreLink>
+      </Bottom>
     </Section>
   );
 }
 
+/* ========================
+   SECTION
+======================== */
+
 const Section = styled.section`
   position: relative;
   z-index: 2;
-  padding: 9rem 1.5rem;
-  background: rgba(255, 248, 241, 0.34);
+
+  padding: 8rem 1.5rem;
+
+  /* Keeps the global 3D flower visible */
+  background: rgba(250, 245, 239, 0.72);
+
+  scroll-margin-top: 90px;
+
+  @media (max-width: 768px) {
+    padding: 5rem 1.2rem;
+  }
 `;
+
+/* ========================
+   HEADER
+======================== */
 
 const Header = styled(motion.div)`
   max-width: 980px;
-  margin: 0 auto 5rem;
+  margin: 0 auto 4.5rem;
+
   text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const SmallTitle = styled.p`
+  margin: 0 0 1.5rem;
+
+  color: #ad756b;
+
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  font-size: 0.78rem;
-  color: #a96f5f;
-  margin-bottom: 1.2rem;
-  font-weight: 800;
+
+  font-size: 0.75rem;
+  font-weight: 700;
 `;
 
 const Title = styled.h2`
-  font-size: clamp(3rem, 6vw, 5.6rem);
-  line-height: 0.92;
-  letter-spacing: -0.065em;
-  color: #2f2a25;
+  margin: 0 auto;
+
+  color: #624b41;
+
+  font-size: clamp(3rem, 5.5vw, 5.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  font-weight: 750;
 `;
 
+const Accent = styled.span`
+  display: block;
+
+  margin-top: 0.25rem;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+
+  letter-spacing: -0.04em;
+  color: #bb8178;
+`;
+
+const Intro = styled.p`
+  max-width: 620px;
+  margin: 2rem auto 0;
+
+  color: #62534c;
+
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.8;
+`;
+
+/* ========================
+   GRID
+======================== */
+
 const Grid = styled.div`
-  max-width: 1250px;
+  max-width: 1220px;
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
 
-  @media (max-width: 1150px) {
-    grid-template-columns: repeat(2, 1fr);
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 1.2rem;
+  align-items: stretch;
+
+  /* Subtle editorial stagger */
+
+  @media (min-width: 1151px) {
+    & > :nth-child(even) {
+      margin-top: 24px;
+    }
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 1150px) {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 650px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
-const Card = styled(motion.article)`
-  min-height: 470px;
+/* ========================
+   FEATURE CARD
+======================== */
+
+const Card = styled(motion.article)<{
+  $background: string;
+  $border: string;
+  $accent: string;
+}>`
+  --card-accent: ${({ $accent }) => $accent};
+
+  position: relative;
+  overflow: hidden;
+
+  min-height: 345px;
   padding: 1.8rem;
-  border-radius: 34px;
 
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(242, 140, 140, 0.16);
-  backdrop-filter: blur(18px);
+  border-radius: 28px;
 
-  box-shadow: 0 28px 80px rgba(74, 54, 44, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  background: ${({ $background }) => $background};
+  border: 1px solid ${({ $border }) => $border};
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
-  transition: transform 0.35s ease, box-shadow 0.35s ease,
-    border-color 0.35s ease, background 0.35s ease;
+  box-shadow:
+    0 12px 36px rgba(98, 75, 65, 0.05);
+
+  transition:
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 
   &:hover {
-    transform: translateY(-12px);
-    border-color: rgba(242, 140, 140, 0.34);
-    background: rgba(255, 255, 255, 0.76);
-
-    box-shadow: 0 42px 120px rgba(74, 54, 44, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.88);
+    box-shadow:
+      0 22px 50px rgba(98, 75, 65, 0.12);
   }
 
-  &:hover ${"" /* injected below */} {
+  @media (max-width: 650px) {
+    min-height: 300px;
+    padding: 1.6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
+
+/* ========================
+   CARD TOP
+======================== */
 
 const Top = styled.div`
   display: flex;
@@ -200,162 +367,167 @@ const Top = styled.div`
 `;
 
 const Number = styled.span`
+  color: var(--card-accent);
+
   font-size: 0.75rem;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  color: #c9896f;
+  font-weight: 700;
+  letter-spacing: 0.18em;
 `;
 
-const Icon = styled.div`
-  width: 54px;
-  height: 54px;
+const IconCircle = styled.div`
+  width: 52px;
+  height: 52px;
+
   border-radius: 50%;
 
   display: grid;
   place-items: center;
 
-  color: #f28c8c;
-  font-size: 1.3rem;
+  color: var(--card-accent);
+  font-size: 1.4rem;
 
-  background: radial-gradient(
-      circle at 30% 20%,
-      rgba(255, 255, 255, 0.9),
-      transparent 32%
-    ),
-    rgba(242, 140, 140, 0.13);
+  background: rgba(255, 255, 255, 0.62);
 
-  box-shadow: 0 14px 35px rgba(242, 140, 140, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid
+    rgba(255, 255, 255, 0.65);
 
-  transition: transform 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease;
 
   ${Card}:hover & {
-    transform: rotate(-8deg) scale(1.08);
+    transform: rotate(-8deg) scale(1.07);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    ${Card}:hover & {
+      transform: none;
+    }
   }
 `;
 
-const CardContent = styled.div``;
+/* ========================
+   CARD CONTENT
+======================== */
+
+const CardContent = styled.div`
+  margin-top: 2rem;
+`;
 
 const CardTitle = styled.h3`
-  margin-top: 3.5rem;
-  font-size: clamp(1.85rem, 2.4vw, 2.7rem);
-  line-height: 0.95;
-  letter-spacing: -0.055em;
-  color: #4a3b33;
+  margin: 0 0 1rem;
+
+  color: #624b41;
+
+  font-size: clamp(1.55rem, 2vw, 2rem);
+  font-weight: 700;
+
+  line-height: 1.15;
+  letter-spacing: -0.045em;
 `;
 
 const CardText = styled.p`
-  margin-top: 1.2rem;
-  font-size: 0.98rem;
+  margin: 0;
+
+  color: #62534c;
+
+  font-size: 0.92rem;
   line-height: 1.75;
-  color: #5f554c;
 `;
 
-const Preview = styled.p`
-  margin-top: 1.1rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid rgba(242, 140, 140, 0.14);
-
-  font-size: 0.9rem;
-  line-height: 1.7;
-  color: #7a6b5f;
-`;
+/* ========================
+   TAGS
+======================== */
 
 const Tags = styled.div`
-  margin-top: 1.5rem;
+  margin-top: auto;
+  padding-top: 1.8rem;
+
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+
+  gap: 0.45rem;
 `;
 
 const Tag = styled.span`
-  padding: 0.48rem 0.72rem;
+  padding: 0.4rem 0.7rem;
   border-radius: 999px;
 
-  background: rgba(255, 250, 246, 0.72);
-  border: 1px solid rgba(242, 140, 140, 0.18);
+  color: var(--card-accent);
 
-  color: #8c6b5c;
-  font-size: 0.72rem;
-  font-weight: 850;
-  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.72);
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.8);
+
+  font-size: 0.67rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
 `;
 
-const MiniPreview = styled.div`
-  margin-top: 1.4rem;
-  padding: 1rem;
-  border-radius: 22px;
+/* ========================
+   BOTTOM CTA
+======================== */
 
-  background: radial-gradient(
-      circle at 20% 10%,
-      rgba(242, 140, 140, 0.16),
-      transparent 38%
-    ),
-    rgba(255, 250, 246, 0.58);
+const Bottom = styled.div`
+  margin-top: 4.5rem;
 
-  border: 1px solid rgba(242, 140, 140, 0.14);
+  display: flex;
+  justify-content: center;
 
-  display: grid;
-  gap: 0.55rem;
-
-  opacity: 0;
-  transform: translateY(12px);
-  max-height: 0;
-  overflow: hidden;
-
-  transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.45s ease;
-
-  ${Card}:hover & {
-    opacity: 1;
-    transform: translateY(0);
-    max-height: 190px;
-  }
-
-  @media (max-width: 700px) {
-    opacity: 1;
-    transform: none;
-    max-height: 190px;
+  @media (max-width: 768px) {
+    margin-top: 3rem;
   }
 `;
 
-const MiniPreviewItem = styled.div`
-  padding: 0.55rem 0.7rem;
-  border-radius: 999px;
-
-  background: rgba(255, 255, 255, 0.62);
-  color: #5f554c;
-
-  font-size: 0.78rem;
-  font-weight: 800;
-`;
-
-const CardLink = styled(Link)`
-  margin-top: 1.8rem;
-
+const ExploreLink = styled.a`
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.8rem;
 
-  width: fit-content;
+  color: #a96e66;
 
-  color: #e97880;
-  font-size: 0.9rem;
-  font-weight: 900;
+  font-size: 0.95rem;
+  font-weight: 700;
   text-decoration: none;
 
-  span {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+  padding-bottom: 0.5rem;
 
-    display: grid;
-    place-items: center;
+  border-bottom: 1px solid
+    rgba(169, 110, 102, 0.35);
 
-    background: rgba(242, 140, 140, 0.13);
+  transition:
+    gap 0.3s ease,
+    color 0.3s ease;
+
+  svg {
+    font-size: 1.2rem;
+
     transition: transform 0.3s ease;
   }
 
-  &:hover span {
-    transform: translateX(4px);
+  &:hover {
+    gap: 1.15rem;
+    color: #624b41;
+  }
+
+  &:hover svg {
+    transform: translate(3px, -3px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #bb8178;
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    svg {
+      transition: none;
+    }
   }
 `;

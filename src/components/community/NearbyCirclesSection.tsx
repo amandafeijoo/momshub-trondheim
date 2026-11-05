@@ -28,10 +28,11 @@ export default function NearbyCirclesSection() {
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setIntroProgress(latest);
 
-    const introEnd = 0.42;
+    const introEnd = 0.62;
     setShowIntro(latest < introEnd);
+    
+    const startAfterIntro = 0.64;
 
-    const startAfterIntro = 0.44;
     const usableProgress =
       Math.max(0, latest - startAfterIntro) / (1 - startAfterIntro);
 
@@ -49,6 +50,11 @@ export default function NearbyCirclesSection() {
   return (
     <Section ref={sectionRef}>
       <Sticky>
+        <BackgroundImage
+          src="https://res.cloudinary.com/dp6jrgvoz/image/upload/v1780084332/fondo_community_d86bur.png"
+          alt=""
+        />
+
         <NearbyCirclesBackground />
 
         <AnimatePresence mode="wait">
@@ -70,10 +76,12 @@ export default function NearbyCirclesSection() {
             <Header>
               <SmallTitle>Nearby circles</SmallTitle>
 
-              <Title>
-                Small circles for
-                <span>real motherhood moments.</span>
-              </Title>
+              <Title>Find your circle.</Title>
+
+              <Subtitle>
+                Small communities for pregnancy, newborn days, friendship and
+                life abroad in Trondheim.
+              </Subtitle>
             </Header>
 
             <Stage>
@@ -81,6 +89,7 @@ export default function NearbyCirclesSection() {
                 <SideNumber>
                   {String(activeIndex + 1).padStart(2, "0")}
                 </SideNumber>
+
                 <SideLabel>Why moms join</SideLabel>
 
                 <AnimatePresence mode="wait">
@@ -128,6 +137,10 @@ export default function NearbyCirclesSection() {
                 </Counter>
               </SideTextRight>
             </Stage>
+
+            <MobileCounter>
+              {activeIndex + 1}/{circles.length}
+            </MobileCounter>
           </StackLayer>
         )}
       </Sticky>
@@ -140,6 +153,14 @@ const Section = styled.section`
   z-index: 2;
   height: 380vh;
   background: rgba(255, 248, 241, 0.3);
+
+  @media (max-width: 768px) {
+    height: 520vh;
+  }
+
+  @media (max-width: 480px) {
+    height: 500vh;
+  }
 `;
 
 const Sticky = styled.div`
@@ -147,21 +168,41 @@ const Sticky = styled.div`
   top: 52px;
   isolation: isolate;
 
-  min-height: calc(100vh - 82px);
-  padding: 2rem 1.5rem 5rem;
+  min-height: calc(100svh - 52px);
+  padding: clamp(1.2rem, 4vw, 2rem) 1rem clamp(2rem, 5vw, 5rem);
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   overflow: hidden;
+  background: #fffaf6;
 
-  background: radial-gradient(
-      circle at 50% 36%,
-      rgba(242, 140, 140, 0.12),
-      transparent 34%
-    ),
-    linear-gradient(180deg, #fffaf6 0%, #f8eee7 100%);
+  @media (max-width: 768px) {
+    top: 0;
+    min-height: 100svh;
+    padding: 1.4rem 1rem 2rem;
+  }
+`;
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center bottom;
+
+  z-index: -4;
+  opacity: 0.62;
+
+  pointer-events: none;
+
+  @media (max-width: 768px) {
+    opacity: 0.48;
+  }
 `;
 
 const IntroLayer = styled(motion.div)`
@@ -179,6 +220,7 @@ const IntroLayer = styled(motion.div)`
 const StackLayer = styled.div`
   position: relative;
   z-index: 10;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -186,9 +228,13 @@ const Header = styled.div`
   z-index: 10;
 
   max-width: 980px;
-  margin: 0 auto 2.4rem;
+  margin: 0 auto clamp(1.4rem, 4vw, 2.4rem);
 
   text-align: center;
+
+  @media (max-width: 768px) {
+    max-width: 92%;
+  }
 `;
 
 const SmallTitle = styled.p`
@@ -200,19 +246,50 @@ const SmallTitle = styled.p`
   font-size: 0.72rem;
   font-weight: 900;
 
-  color: #b58a76;
+  color: #634d43;
+
+  @media (max-width: 480px) {
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    margin-bottom: 0.7rem;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: clamp(2.8rem, 5.8vw, 5.2rem);
-  line-height: 0.88;
+  font-size: clamp(2.4rem, 8vw, 5.2rem);
+  line-height: 0.9;
   letter-spacing: -0.075em;
 
-  color: #4a3b33;
+  color: #b68b74;
 
   span {
     display: block;
     color: #a98c78;
+  }
+
+  @media (max-width: 480px) {
+    font-size: clamp(2.5rem, 13vw, 4rem);
+    letter-spacing: -0.065em;
+  }
+`;
+
+const Subtitle = styled.p`
+  margin-top: 1.2rem;
+
+  max-width: 700px;
+
+  font-size: clamp(0.95rem, 3.5vw, 1.35rem);
+  line-height: 1.6;
+
+  color: #74604f;
+  font-weight: 500;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: 480px) {
+    margin-top: 1rem;
+    line-height: 1.5;
   }
 `;
 
@@ -225,12 +302,17 @@ const Stage = styled.div`
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: 1fr minmax(340px, 460px) 1fr;
+  grid-template-columns: 1fr minmax(320px, 460px) 1fr;
   align-items: center;
-  gap: 3.2rem;
+  gap: clamp(1.5rem, 4vw, 3.2rem);
 
-  @media (max-width: 950px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 1050px) {
+    grid-template-columns: minmax(280px, 520px);
+    justify-content: center;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: minmax(0, 1fr);
   }
 `;
 
@@ -244,7 +326,9 @@ const SideTextLeft = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 950px) {
+  color: #d7a981;
+
+  @media (max-width: 1050px) {
     display: none;
   }
 `;
@@ -281,23 +365,33 @@ const SideLabel = styled.span`
 `;
 
 const SideQuote = styled(motion.h4)`
-  max-width: 290px;
+  max-width: 320px;
 
-  font-size: clamp(1.35rem, 1.9vw, 2rem);
-  line-height: 1.06;
-  letter-spacing: -0.055em;
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.03em;
 
-  color: #4f4037;
+  color: #a18573;
+  font-weight: 500;
+
+  text-align: left;
 `;
 
 const CardStack = styled.div`
   position: relative;
   z-index: 3;
 
-  height: 460px;
+  width: min(100%, 460px);
+  height: clamp(390px, 58vh, 460px);
+  margin: 0 auto;
 
-  @media (max-width: 950px) {
-    height: 470px;
+  @media (max-width: 768px) {
+    height: clamp(390px, 60vh, 450px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: clamp(360px, 58vh, 420px);
   }
 `;
 
@@ -305,8 +399,8 @@ const CardGlow = styled.div`
   position: absolute;
   z-index: -1;
 
-  width: 560px;
-  height: 560px;
+  width: min(560px, 120vw);
+  height: min(560px, 120vw);
 
   left: 50%;
   top: 50%;
@@ -324,6 +418,11 @@ const CardGlow = styled.div`
 
   filter: blur(70px);
   pointer-events: none;
+
+  @media (max-width: 480px) {
+    filter: blur(45px);
+    opacity: 0.8;
+  }
 `;
 
 const Counter = styled.div<{ $progress: number }>`
@@ -363,4 +462,24 @@ const CounterText = styled.span`
   color: #74655d;
   font-size: 1.45rem;
   font-weight: 700;
+`;
+
+const MobileCounter = styled.div`
+  display: none;
+
+  @media (max-width: 1050px) {
+    display: block;
+    margin: 1.2rem auto 0;
+    text-align: center;
+
+    color: #8d7463;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
