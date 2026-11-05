@@ -1,3 +1,4 @@
+
 import { useRef, useState } from "react";
 import styled from "styled-components";
 import { useScroll, useMotionValueEvent } from "framer-motion";
@@ -57,7 +58,7 @@ const marketplaceData = [
 ];
 
 export default function MarketplaceExperience() {
-  const sectionRef = (useRef < HTMLElement) | (null > null);
+  const sectionRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
@@ -67,7 +68,10 @@ export default function MarketplaceExperience() {
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     const total = marketplaceData.length;
-    const index = Math.min(total - 1, Math.floor(latest * total));
+    const index = Math.min(
+      total - 1,
+      Math.floor(latest * total)
+    );
 
     setActiveIndex(index);
   });
@@ -76,11 +80,17 @@ export default function MarketplaceExperience() {
     <Section ref={sectionRef}>
       <StickyWrapper>
         <CanvasLayer>
-          <CanvasScene activeIndex={activeIndex} progress={scrollYProgress} />
+          <CanvasScene
+            activeIndex={activeIndex}
+            progress={scrollYProgress}
+          />
         </CanvasLayer>
 
         <OverlayLayer>
-          <OverlayContent items={marketplaceData} activeIndex={activeIndex} />
+          <OverlayContent
+            items={marketplaceData}
+            activeIndex={activeIndex}
+          />
         </OverlayLayer>
       </StickyWrapper>
     </Section>

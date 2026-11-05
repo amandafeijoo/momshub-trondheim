@@ -1,3 +1,4 @@
+
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -65,19 +66,22 @@ function ParticleImage({ image }: Props) {
     const mouseX = state.pointer.x;
     const mouseY = state.pointer.y;
 
-    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+    materialRef.current.uniforms.uTime.value =
+      state.clock.elapsedTime;
 
-    materialRef.current.uniforms.uMouse.value.x = THREE.MathUtils.lerp(
-      materialRef.current.uniforms.uMouse.value.x,
-      mouseX,
-      0.08
-    );
+    materialRef.current.uniforms.uMouse.value.x =
+      THREE.MathUtils.lerp(
+        materialRef.current.uniforms.uMouse.value.x,
+        mouseX,
+        0.08
+      );
 
-    materialRef.current.uniforms.uMouse.value.y = THREE.MathUtils.lerp(
-      materialRef.current.uniforms.uMouse.value.y,
-      mouseY,
-      0.08
-    );
+    materialRef.current.uniforms.uMouse.value.y =
+      THREE.MathUtils.lerp(
+        materialRef.current.uniforms.uMouse.value.y,
+        mouseY,
+        0.08
+      );
   });
 
   return (
@@ -85,23 +89,17 @@ function ParticleImage({ image }: Props) {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          array={particles.positions}
-          count={particles.count}
-          itemSize={3}
+          args={[particles.positions, 3]}
         />
 
         <bufferAttribute
           attach="attributes-uv"
-          array={particles.uvs}
-          count={particles.count}
-          itemSize={2}
+          args={[particles.uvs, 2]}
         />
 
         <bufferAttribute
           attach="attributes-aRandom"
-          array={particles.randoms}
-          count={particles.count}
-          itemSize={3}
+          args={[particles.randoms, 3]}
         />
       </bufferGeometry>
 
@@ -142,7 +140,11 @@ const vertexShader = `
 
     float influence = smoothstep(1.4, 0.0, dist);
 
-    float wave = sin(pos.x * 2.4 + pos.y * 3.2 + uTime * 1.4);
+    float wave = sin(
+      pos.x * 2.4 +
+      pos.y * 3.2 +
+      uTime * 1.4
+    );
 
     pos.z += wave * 0.16;
     pos.z += influence * 0.85;
@@ -174,7 +176,12 @@ const fragmentShader = `
     float circle = distance(gl_PointCoord, vec2(0.5));
     if (circle > 0.48) discard;
 
-    color.rgb = mix(color.rgb, vec3(0.98, 0.91, 0.87), 0.16);
+    color.rgb = mix(
+      color.rgb,
+      vec3(0.98, 0.91, 0.87),
+      0.16
+    );
+
     color.a *= vAlpha;
 
     gl_FragColor = color;
