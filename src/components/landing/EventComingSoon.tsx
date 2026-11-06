@@ -81,37 +81,54 @@ export default function EventComingSoon() {
           LEFT — MAIN CONTENT
       ===================== */}
 
-      <Content>
+      
+<Content>
+  <Eyebrow>
+    <Dot />
+    OUR NEXT GATHERINGS
+  </Eyebrow>
 
-        <Eyebrow>
-          <Dot />
-          OUR NEXT GATHERINGS
-        </Eyebrow>
+  <Title>
+    Good things are
+    <Accent>coming together</Accent>
+  </Title>
 
-        <Title>
-          Good things are
-          <Accent>
-            coming together
-          </Accent>
-        </Title>
+  <Description>
+    We're creating more opportunities for international moms
+    to connect, share and feel at home in Trondheim.
+  </Description>
 
-        <Description>
-          We're preparing more moments to meet,
-          create, share and explore Trondheim
-          together. We'll announce the dates
-          as soon as everything is confirmed.
-        </Description>
+  <WednesdayCard>
+    <WednesdayIcon>
+      <FiCoffee aria-hidden="true" />
+    </WednesdayIcon>
 
-        <PrimaryLink
-          href={FACEBOOK_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Join our community
-          <FiArrowUpRight aria-hidden="true" />
-        </PrimaryLink>
+    <WednesdayInfo>
+      <strong>Wednesday Meetups</strong>
+      <span>Wednesdays · 11:00–13:00</span>
+      <small>Bøker & Bylab, Trondheim</small>
+      <WednesdayStatus>
+        First meetup date to be confirmed
+      </WednesdayStatus>
+    </WednesdayInfo>
+  </WednesdayCard>
 
-      </Content>
+  <Description>
+    As soon as dates are confirmed, you'll find all our
+    upcoming meetups, creative workshops and community
+    events right here.
+  </Description>
+
+  <PrimaryLink
+    href={FACEBOOK_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Join our community
+    <FiArrowUpRight aria-hidden="true" />
+  </PrimaryLink>
+</Content>
+
 
       {/* =====================
           RIGHT — ANIMATED
@@ -336,6 +353,74 @@ const Description = styled.p`
     margin-bottom: 1.7rem;
   }
 `;
+
+
+const WednesdayCard = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  margin: 0 0 1.8rem;
+  padding: 1.4rem;
+
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(187, 129, 120, 0.22);
+
+  box-shadow: 0 8px 28px rgba(98, 75, 65, 0.04);
+
+  @media (max-width: 600px) {
+    padding: 1.1rem;
+    gap: 0.85rem;
+  }
+`;
+
+const WednesdayIcon = styled.div`
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+  background: #f5e5df;
+  color: #a96e66;
+  font-size: 1.3rem;
+`;
+
+const WednesdayInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+
+  strong {
+    color: #624b41;
+    font-size: 1rem;
+  }
+
+  span {
+    color: #a96e66;
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  small {
+    color: #76645b;
+    font-size: 0.8rem;
+  }
+`;
+
+const WednesdayStatus = styled.p`
+  margin: 0.35rem 0 0;
+
+  color: #ad756b;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-style: italic;
+`;
+
 
 /* =========================
    MAIN BUTTON
