@@ -90,8 +90,7 @@ export default function FinalCTA() {
           </Actions>
 
           <Acknowledgement>
-            With thanks to Bøker & Bylab and Trondheim
-            Kommune for supporting community connections.
+            With thanks to Bøker & Bylab for supporting community connections.
           </Acknowledgement>
         </ContentColumn>
       </Container>
