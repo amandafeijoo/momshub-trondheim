@@ -11,6 +11,7 @@ import { FiArrowUpRight, FiRefreshCw } from "react-icons/fi";
 
 import EventCard from "./EventCard";
 import EventComingSoon from "./EventComingSoon";
+import ChristmasVolunteeringBanner from "./ChristmasVolunteeringBanner";
 
 import type { MomsHubEvent } from "./EventCard";
 
@@ -155,7 +156,8 @@ export default function UpcomingEventsSection() {
             around Trondheim.
           </Intro>
         </Header>
-
+              {/* NUEVO: anuncio de voluntariado */}
+    <ChristmasVolunteeringBanner />
         {/* =========================
             LOADING
         ========================= */}
